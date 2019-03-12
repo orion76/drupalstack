@@ -11,7 +11,7 @@ services:
       - "80:80"
     volumes:
       - ./www:/usr/local/apache2/htdocs
-    links:
+    # links:
       # - php:php
     networks:
       - app-network
