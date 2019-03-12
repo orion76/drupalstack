@@ -1,11 +1,13 @@
 FROM php:7.1.13-fpm
 
-RUN echo "Europe/Tallinn" > /etc/timezone \
+ENV TIMEZONE ${TIMEZONE_LOCAL:-"Europe/Samara"}
+
+RUN echo ${TIMEZONE} > /etc/timezone \
   && dpkg-reconfigure -f noninteractive tzdata
 
 RUN apt-get update \
   && apt-get install -y \
-     nano \
+     mc \
      cron \
      libfreetype6-dev \
      libjpeg62-turbo-dev \
@@ -13,16 +15,16 @@ RUN apt-get update \
      libssl-dev \
      libxml2-dev \
      libpq-dev \
-     libcurl4-openssl-dev \
+    #  libcurl4-openssl-dev \
      libmcrypt-dev \
      libbz2-dev \
      libpspell-dev \
-     libldap2-dev \
+    #  libldap2-dev \
      libedit-dev \
      libreadline-dev \
      libc-client-dev \
      libkrb5-dev \
-     libmemcached-dev \
+    #  libmemcached-dev \
      zlib1g-dev \
      ssmtp \
      mysql-client \
@@ -100,23 +102,23 @@ RUN docker-php-ext-configure zip \
 RUN docker-php-ext-install opcache \
   && docker-php-ext-enable opcache
 
-RUN docker-php-ext-configure openssl; exit 0 \
-  && cp /usr/src/php/ext/openssl/config0.m4 /usr/src/php/ext/openssl/config.m4 \
-  && docker-php-ext-install openssl
+# RUN docker-php-ext-configure openssl; exit 0 \
+#   && cp /usr/src/php/ext/openssl/config0.m4 /usr/src/php/ext/openssl/config.m4 \
+#   && docker-php-ext-install openssl
 
 RUN docker-php-ext-configure zlib; exit 0 \
   && cp /usr/src/php/ext/zlib/config0.m4 /usr/src/php/ext/zlib/config.m4 \
   && docker-php-ext-install zlib
 
-RUN ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so \
-  && docker-php-ext-configure ldap \
-  && docker-php-ext-install ldap
+# RUN ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so \
+#   && docker-php-ext-configure ldap \
+#   && docker-php-ext-install ldap
 
 RUN pear install pecl/xdebug-2.5.5 \
   && docker-php-ext-enable xdebug
 
-RUN pear install pecl/memcached-3.0.3 \
-  && docker-php-ext-enable memcached
+# RUN pear install pecl/memcached-3.0.3 \
+#   && docker-php-ext-enable memcached
 
 RUN pear install pecl/redis-3.1.3 \
   && docker-php-ext-enable redis
@@ -124,11 +126,11 @@ RUN pear install pecl/redis-3.1.3 \
 RUN pear install pecl/imagick-3.4.3 \
   && docker-php-ext-enable imagick
 
-RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
-  && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$version \
-  && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp \
-  && mv /tmp/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so \
-  && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > $PHP_INI_DIR/conf.d/blackfire.ini
+# RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
+#   && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$version \
+#   && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp \
+#   && mv /tmp/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so \
+#   && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > $PHP_INI_DIR/conf.d/blackfire.ini
 
 RUN git clone https://github.com/Jan-E/uploadprogress.git /tmp/php-uploadprogress \
 	&& cd /tmp/php-uploadprogress \

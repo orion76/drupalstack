@@ -1,11 +1,13 @@
 FROM mysql:5.7.21
 
-RUN echo "Europe/Tallinn" > /etc/timezone \
+ENV TIMEZONE ${TIMEZONE_LOCAL:-"Europe/Samara"}
+
+RUN echo ${TIMEZONE} > /etc/timezone \
   && dpkg-reconfigure -f noninteractive tzdata
 
 RUN apt-get update \
   && apt-get install -y \
-     nano \
+  mc \
   && rm -rf /var/lib/apt/lists/*
 
 COPY ./src/docker-entrypoint-initdb.d /docker-entrypoint-initdb.d
