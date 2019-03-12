@@ -18,7 +18,7 @@ RUN apt-get update \
     #  libcurl4-openssl-dev \
      libmcrypt-dev \
      libbz2-dev \
-     libpspell-dev \
+    #  libpspell-dev \
     #  libldap2-dev \
      libedit-dev \
      libreadline-dev \
@@ -42,8 +42,8 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
 RUN docker-php-ext-configure exif \
   && docker-php-ext-install exif
 
-RUN docker-php-ext-configure ftp \
-  && docker-php-ext-install ftp
+# RUN docker-php-ext-configure ftp \
+#   && docker-php-ext-install ftp
 
 RUN docker-php-ext-configure bcmath \
   && docker-php-ext-install bcmath
@@ -51,8 +51,8 @@ RUN docker-php-ext-configure bcmath \
 RUN docker-php-ext-configure sockets \
   && docker-php-ext-install sockets
 
-RUN docker-php-ext-configure soap \
-  && docker-php-ext-install soap
+# RUN docker-php-ext-configure soap \
+#   && docker-php-ext-install soap
 
 RUN docker-php-ext-configure calendar \
   && docker-php-ext-install calendar
@@ -60,14 +60,14 @@ RUN docker-php-ext-configure calendar \
 RUN docker-php-ext-configure mbstring \
   && docker-php-ext-install mbstring
 
-RUN docker-php-ext-configure pgsql \
-  && docker-php-ext-install pgsql
+# RUN docker-php-ext-configure pgsql \
+#   && docker-php-ext-install pgsql
 
-RUN docker-php-ext-configure mysqli \
-  && docker-php-ext-install mysqli
+# RUN docker-php-ext-configure mysqli \
+#   && docker-php-ext-install mysqli
 
 RUN docker-php-ext-configure pdo \
-  && docker-php-ext-install pdo pdo_pgsql pdo_mysql
+  && docker-php-ext-install pdo pdo_mysql
 
 RUN docker-php-ext-configure curl \
   && docker-php-ext-install curl
@@ -87,20 +87,20 @@ RUN docker-php-ext-configure bz2 \
 RUN docker-php-ext-configure gettext \
   && docker-php-ext-install gettext
 
-RUN docker-php-ext-configure pspell \
-  && docker-php-ext-install pspell
+# RUN docker-php-ext-configure pspell \
+#   && docker-php-ext-install pspell
 
 RUN docker-php-ext-configure readline \
   && docker-php-ext-install readline
 
-RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
-  && docker-php-ext-install imap
+# RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
+#   && docker-php-ext-install imap
 
 RUN docker-php-ext-configure zip \
   && docker-php-ext-install zip
 
-RUN docker-php-ext-install opcache \
-  && docker-php-ext-enable opcache
+# RUN docker-php-ext-install opcache \
+#   && docker-php-ext-enable opcache
 
 # RUN docker-php-ext-configure openssl; exit 0 \
 #   && cp /usr/src/php/ext/openssl/config0.m4 /usr/src/php/ext/openssl/config.m4 \

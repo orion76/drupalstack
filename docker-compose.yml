@@ -12,7 +12,7 @@ services:
     volumes:
       - ./www:/usr/local/apache2/htdocs
     links:
-      - php:php
+      # - php:php
     networks:
       - app-network
 
