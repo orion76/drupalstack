@@ -1,15 +1,14 @@
-FROM nginx:alpine
+FROM nginx
 
 ENV TIMEZONE ${TIMEZONE_LOCAL:-"Europe/Samara"}
 
+RUN echo ${TIMEZONE} > /etc/timezone \
+  && dpkg-reconfigure -f noninteractive tzdata
+
 RUN apt-get update \
   && apt-get install -y \
-     dpkg \
-     mc \
-  && rm -rf /var/lib/apt/lists/* \
-#Set Timezone
-  echo ${TIMEZONE} > /etc/timezone \
-  && dpkg-reconfigure -f noninteractive tzdata
+  mc \
+  && rm -rf /var/lib/apt/lists/*
 
 #RUN openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout /usr/local/apache2/conf/server.key -out /usr/local/apache2/conf/server.crt -subj "/C=/ST=/L=/O=/OU=/CN=drupalstack"
 
